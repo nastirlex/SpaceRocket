@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ракетный симулятор</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        <div id="ui">
+            <div id="editor" class="screen">
+                <h1>Выбор ракеты</h1>
+                <div class="engine-options">
+                    <div class="engine" data-engine="1">
+                        <h3>Двигатель «Фобос»</h3>
+                        <p>Тяга: 500 kN</p>
+                        <p>Расход топлива: 10 кг/с</p>
+                    </div>
+                    <div class="engine" data-engine="2">
+                        <h3>Двигатель «Деймос»</h3>
+                        <p>Тяга: 800 kN</p>
+                        <p>Расход топлива: 15 кг/с</p>
+                    </div>
+                    <div class="engine" data-engine="3">
+                        <h3>Двигатель «Арес»</h3>
+                        <p>Тяга: 1200 kN</p>
+                        <p>Расход топлива: 20 кг/с</p>
+                    </div>
+                    <div class="engine" data-engine="4">
+                        <h3>Двигатель «Атлант»</h3>
+                        <p>Тяга: 1500 kN</p>
+                        <p>Расход топлива: 25 кг/с</p>
+                    </div>
+                </div>
+                <button id="start-btn" class="hidden">СТАРТ</button>
+            </div>
+            <div id="flight" class="screen hidden">
+                <div class="flight-data">
+                    <p>Высота: <span id="altitude">0</span> км</p>
+                    <p>Скорость: <span id="speed">0</span> м/с</p>
+                    <p>Топливо: <span id="fuel">100</span>%</p>
+                    <p>Статус: <span id="status">ПОДГОТОВКА</span></p>
+                </div>
+                <div class="controls">
+                    <button id="left">← Влево</button>
+                    <button id="right">Вправо →</button>
+                    <button id="back">Назад в редактор</button>
+                </div>
+            </div>
+            <div id="result" class="screen hidden">
+                <h2>Полёт завершён!</h2>
+                <p>Статус: <span id="result-status"></span></p>
+                <p>Макс. скорость: <span id="max-speed"></span> м/с</p>
+                <p>Макс. высота: <span id="max-altitude"></span> км</p>
+                <button id="restart">Новый полёт</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
