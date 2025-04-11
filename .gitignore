@@ -4,12 +4,21 @@ vendor/
 .npm
 .yarn
 /venv
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+
 # Файлы сборки и дистрибутивы
 dist/
 build/
 out/
 *.min.js
 *.min.css
+instance/
+.webassets-cache
 
 # Логи и временные файлы
 logs/
@@ -29,6 +38,7 @@ temp/
 .env.production.local
 .env.*.local
 config.local.js
+.flaskenv
 
 # Файлы IDE и редакторов
 .idea/
@@ -47,8 +57,18 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
+.tox/
+.nox/
+.hypothesis/
+
+# Файлы базы данных
+*.db
+*.sqlite
+*.sqlite3
 
 # Другие специфичные файлы
 *.swp
 *.swo
-.DS_Store 
+.DS_Store
+.flask_session/
+flask_session/ 
