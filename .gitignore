@@ -1,0 +1,54 @@
+# Зависимости и пакеты
+node_modules/
+vendor/
+.npm
+.yarn
+/venv
+# Файлы сборки и дистрибутивы
+dist/
+build/
+out/
+*.min.js
+*.min.css
+
+# Логи и временные файлы
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+tmp/
+temp/
+
+# Файлы окружения и конфигурации
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+config.local.js
+
+# Файлы IDE и редакторов
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# Кэш и компилированные файлы
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Другие специфичные файлы
+*.swp
+*.swo
+.DS_Store 

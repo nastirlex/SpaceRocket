@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ракетная игра - Выбор ракеты</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #0b0d2a, #1a1b4b, #2e1b6b);
+            background-attachment: fixed;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            z-index: -1;
+        }
+        
+        .container {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 1000px;
+            margin: 50px auto;
+            box-shadow: 0 0 20px rgba(0, 0, 255, 0.3);
+        }
+        
+        h1, h2 {
+            text-align: center;
+            color: #f8f9fa;
+            text-shadow: 0 0 10px rgba(100, 149, 237, 0.8);
+        }
+        
+        .welcome-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .welcome-content {
+            background: linear-gradient(to bottom, #1a1b4b, #2e1b6b);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 25px rgba(100, 149, 237, 0.8);
+            color: white;
+        }
+        
+        .welcome-message {
+            margin-bottom: 20px;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        
+        .welcome-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+        }
+        
+        .welcome-btn:hover {
+            background-color: #2980b9;
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.8);
+        }
+
+        .rocket-description {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: rgba(20, 30, 60, 0.7);
+            border-radius: 5px;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .rocket-description p {
+            color: #ffffff;
+            line-height: 1.4;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        
+        .engine-card {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(100, 149, 237, 0.5);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .engine-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(100, 149, 237, 0.8);
+            background-color: rgba(10, 20, 50, 0.8);
+        }
+        
+        .engine-card h3 {
+            color: #ff6b6b;
+            text-shadow: 0 0 5px rgba(255, 107, 107, 0.7);
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .engine-card ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .engine-card li {
+            margin-bottom: 8px;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+            font-size: 15px;
+        }
+        
+        .start-button {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 15px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+        }
+        
+        .start-button:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <!-- Модальное окно для приветственных сообщений -->
+    <div id="welcome-modal" class="welcome-modal">
+        <div class="welcome-content">
+            <div id="welcome-message" class="welcome-message"></div>
+            <button id="welcome-next-btn" class="welcome-btn">Далее</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Выбор ракеты</h1>
+        
+        <form action="/start_flight" method="post">
+            <div class="engine-selection">
+                <h2>Выберите космический корабль:</h2>
+                
+                <div class="engines">
+                    {% for engine_id, engine in engines.items() %}
+                    <div class="engine-card">
+                        <input type="radio" name="engine" id="{{ engine_id }}" value="{{ engine_id }}" {% if loop.first %}checked{% endif %}>
+                        <label for="{{ engine_id }}">
+                            {% if engine_id == 'basic' %}
+                                <h3>Звёздочка-Леталочка</h3>
+                            {% elif engine_id == 'advanced' %}
+                                <h3>Ракета-Карамелька</h3>
+                            {% elif engine_id == 'super' %}
+                                <h3>Космический Патруль</h3>
+                            {% endif %}
+                            <div class="rocket-description">
+                                {% if engine_id == 'basic' %}
+                                <p>Самая грациозная ракета в галактике! Летает, оставляя за собой сверкающий шлейф из искрящихся звёздочек. Любит играть в прятки с полярными сияниями.</p>
+                                {% elif engine_id == 'advanced' %}
+                                <p>Летит, звенит, всех угостит! Корпус сделан из хрустящей карамели, а вместо топлива — газировка. Может случайно прилипнуть к какой-нибудь планете… но это не страшно!</p>
+                                {% elif engine_id == 'super' %}
+                                <p>Не просто ракета — а целый отряд героев! Летает туда, где во Вселенной случилась несправедливость. Экипаж всегда наготове: у них есть волшебный свисток и запас космических объятий.</p>
+                                {% endif %}
+                            </div>
+                            <ul>
+                                {% if engine_id == 'basic' %}
+                                    <li>Сила волшебства: {{ engine.thrust }} звёздных искр</li>
+                                    <li>Скорость мечты: {{ engine.specific_impulse }} улыбок в секунду</li>
+                                    <li>Расход звёздной пыли: {{ engine.fuel_consumption }} горстей за полёт</li>
+                                {% elif engine_id == 'advanced' %}
+                                    <li>Сладкая мощность: {{ engine.thrust }} конфетных единиц</li>
+                                    <li>Карамельный разгон: {{ engine.specific_impulse }} леденцов в минуту</li>
+                                    <li>Расход газировки: {{ engine.fuel_consumption }} пузырьков в секунду</li>
+                                {% elif engine_id == 'super' %}
+                                    <li>Сила справедливости: {{ engine.thrust }} супергеройских сил</li>
+                                    <li>Скорость спасения: {{ engine.specific_impulse }} подвигов в час</li>
+                                    <li>Расход храбрости: {{ engine.fuel_consumption }} медалей за отвагу</li>
+                                {% endif %}
+                            </ul>
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <button type="submit" class="start-button">Начать полет</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const welcomeModal = document.getElementById('welcome-modal');
+            const welcomeMessage = document.getElementById('welcome-message');
+            const welcomeNextBtn = document.getElementById('welcome-next-btn');
+            
+            // Приветственные сообщения
+            const messages = [
+                "Мама выключила свет.. Звездочки на потолке очень яркие. Мой космический корабль заправлен! новым пастельным бельем и готов к полету.",
+                "Привет, юный космонавт! 🚀✨<br><br>Добро пожаловать в мир безграничного воображения и захватывающих космических приключений! Ты готов отправиться в полет мечты?<br><br>Выбери свою ракету, застегни ремни безопасности и приготовься к невероятному путешествию сквозь звезды, планеты из конфет и галактики, полные игрушек!"
+            ];
+            
+            let currentMessageIndex = 0;
+            
+            // Показываем первое сообщение
+            welcomeMessage.innerHTML = messages[currentMessageIndex];
+            welcomeModal.style.display = 'flex';
+            
+            // Обработчик кнопки "Далее"
+            welcomeNextBtn.addEventListener('click', function() {
+                currentMessageIndex++;
+                
+                if (currentMessageIndex < messages.length) {
+                    // Показываем следующее сообщение
+                    welcomeMessage.innerHTML = messages[currentMessageIndex];
+                    
+                    // Если это последнее сообщение, меняем текст кнопки
+                    if (currentMessageIndex === messages.length - 1) {
+                        welcomeNextBtn.textContent = 'Начать игру';
+                    }
+                } else {
+                    // Закрываем модальное окно
+                    welcomeModal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
